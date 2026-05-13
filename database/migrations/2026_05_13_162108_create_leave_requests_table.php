@@ -19,7 +19,7 @@ class CreateLeaveRequestsTable extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->text('reason');
-            $table->string('status')->default('Pending'); //To approve/reject requirement
+            $table->enum('status', ['Pending', 'Approved', 'Rejected'])->default('Pending'); // enumerate through the 3 and set pending as default
             $table->timestamps();
         });
     }
