@@ -11,7 +11,7 @@ class LeaveRequestController extends Controller
     public function index()
     {
         $requests = LeaveRequest::latest()->get();
-        return view('leave-requests.index', compact('requests'));
+        return view('leave_requests.index', compact('requests'));
     }
 
     // store new leaves
@@ -31,7 +31,7 @@ class LeaveRequestController extends Controller
     }
 
     // Approve or Reject request
-    public function update(Request $request, LeaveRequest $leaveRequest)
+    public function updateStatus(Request $request, LeaveRequest $leaveRequest)
     {
         $request->validate([
             'status' => 'required|in:Approved,Rejected',
