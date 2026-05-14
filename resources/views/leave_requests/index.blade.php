@@ -65,6 +65,8 @@
             border-bottom: 1px solid #eee; 
         }
 
+        td:last-child { white-space: nowrap; } // fix actions buttons from getting out of place
+
         input.error, textarea.error { border-color: #e53e3e; }
         .error-msg { color: #e53e3e; 
             font-size: 13px; 
