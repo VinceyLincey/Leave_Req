@@ -23,7 +23,7 @@ S1 - Overtime Claims Module
 
 S2 - Status still show pending
 
-1. Check the controller's 'update()' method - confirm '$leaveRequest-save()' or 'update' is actually being called
+1. Check the controller's 'update()' method - confirm '$leaveRequest->save()' or 'update' is actually being called
 2. Check the database directly - query the record to see if the status actually changed in the DB
 3. Check the route - confirm the PATCH route is hitting the right controller method and the ID is being passed correctly
 4. Check for caching - ensure the list view is fetching fresh data from the DB, not a cached result
