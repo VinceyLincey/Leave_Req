@@ -8,10 +8,15 @@ use Illuminate\Http\Request;
 class LeaveRequestController extends Controller
 {
     // show all the requests
-    public function index()
+    public function index(Request $request)
     {
-        $requests = LeaveRequest::latest()->get();
-        return view('leave_requests.index', compact('requests'));
+        $status = $request->query('status');
+
+        $requests = LeaveRequest::latest()
+            ->when($status, fn($query) => $query->where('status', $status))
+            ->get();
+
+        return view('leave_requests.index', compact('requests', 'status'));
     }
 
     // store new leaves

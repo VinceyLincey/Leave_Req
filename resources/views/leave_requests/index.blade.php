@@ -110,6 +110,30 @@
 
         .btn-reject:hover  { background: #c53030; }
         
+        /* Filter buttons */
+        .filter-bar { margin-bottom: 16px; 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+        }
+
+        .btn-filter { padding: 6px 16px; 
+            border-radius: 4px; 
+            border: 1px solid #ccc; 
+            background: white; 
+            cursor: pointer; 
+            font-size: 13px; 
+            text-decoration: none; 
+            color: #555; 
+        }
+
+        .btn-filter:hover { background: #edf2f7; }
+        
+        .btn-filter.active { background: #3182ce; 
+        color: white; 
+        order-color: #3182ce;
+        }
+
     </style>
 </head>
 <body>
@@ -171,6 +195,21 @@
 
     <div class="table-card">
         <h2>All Leave Requests</h2>
+
+        <div class="filter-bar">
+            <a href="{{ route('leave_requests.index') }}"
+            class="btn-filter {{ !$status ? 'active' : '' }}">All</a>
+
+            <a href="{{ route('leave_requests.index', ['status' => 'Pending']) }}"
+            class="btn-filter {{ $status === 'Pending' ? 'active' : '' }}">Pending</a>
+
+            <a href="{{ route('leave_requests.index', ['status' => 'Approved']) }}"
+            class="btn-filter {{ $status === 'Approved' ? 'active' : '' }}">Approved</a>
+
+            <a href="{{ route('leave_requests.index', ['status' => 'Rejected']) }}"
+            class="btn-filter {{ $status === 'Rejected' ? 'active' : '' }}">Rejected</a>
+        </div>
+
         @if($requests->isEmpty())
             <p style="color:#888;">No leave requests yet.</p>
         @else
