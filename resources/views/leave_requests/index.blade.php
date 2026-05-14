@@ -67,16 +67,47 @@
 
         input.error, textarea.error { border-color: #e53e3e; }
         .error-msg { color: #e53e3e; 
-        font-size: 13px; 
-        margin-top: 4px; 
+            font-size: 13px; 
+            margin-top: 4px; 
         }
     
         .alert-success { background: #c6f6d5; 
-        color: #276749; 
-        padding: 12px 16px; 
-        border-radius: 4px; 
-        margin-bottom: 20px; 
+            color: #276749; 
+            padding: 12px 16px; 
+            border-radius: 4px; 
+            margin-bottom: 20px; 
         }
+
+        /* Status badges */
+        .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+        .badge-pending  { background: #fefcbf; color: #744210; }
+        .badge-approved { background: #c6f6d5; color: #22543d; }
+        .badge-rejected { background: #fed7d7; color: #742a2a; }
+
+        /* Action buttons */
+        .btn-approve { background: #38a169; 
+            color: white; 
+            border: none; 
+            padding: 6px 14px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 13px; 
+        }
+
+        .btn-approve:hover { background: #2f855a; }
+
+        .btn-reject  { background: #e53e3e; 
+            color: white; 
+            border: none; 
+            padding: 6px 14px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            margin-left: 6px; 
+        }
+
+        .btn-reject:hover  { background: #c53030; }
+        
     </style>
 </head>
 <body>
@@ -136,9 +167,59 @@
 
     </div>
 
-    <div class ="table-card">
-        <h2>All leave Requests</h2>>
-        <p>Table of all leave requests</p>
+    <div class="table-card">
+        <h2>All Leave Requests</h2>
+        @if($requests->isEmpty())
+            <p style="color:#888;">No leave requests yet.</p>
+        @else
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($requests as $req)
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $req->name }}</td>
+                    <td>{{ $req->start_date }}</td>
+                    <td>{{ $req->end_date }}</td>
+                    <td>{{ $req->reason }}</td>
+                    <td>
+                        <span class="badge badge-{{ strtolower($req->status) }}">
+                            {{ $req->status }}
+                        </span>
+                    </td>
+                    <td>
+                        @if($req->status === 'Pending')
+                        <form action="{{ route('leave_requests.update', $req->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="Approved">
+                            <button type="submit" class="btn-approve">Approve</button>
+                        </form>
+                        <form action="{{ route('leave_requests.update', $req->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            @method('PATCH')
+                            <input type="hidden" name="status" value="Rejected">
+                            <button type="submit" class="btn-reject">Reject</button>
+                        </form>
+                        @else
+                            <span style="color:#aaa; font-size:13px;">No action</span>
+                        @endif
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+        @endif
     </div>
 
 </body>

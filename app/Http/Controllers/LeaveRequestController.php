@@ -27,16 +27,14 @@ class LeaveRequestController extends Controller
         $validated['status'] = 'Pending';
         LeaveRequest::create($validated);
 
-        return redirect()->route('leave_requests.index')->with('success', 'Leave request submitted successfully.');
-    }
+        return redirect()->route('leave_requests.index')->with('success', 'Leave request submitted successfully.');    }
 
     // Approve or Reject request
-    public function updateStatus(Request $request, LeaveRequest $leaveRequest)
+    public function update(Request $request, LeaveRequest $leaveRequest)
     {
         $request->validate([
             'status' => 'required|in:Approved,Rejected',
         ]);
         $leaveRequest->update(['status' => $request->status]);
-        return redirect()->route('leave_requests.index')->with('success', 'Leave request updated to ' . $request->status.'.');
-    }
+        return redirect()->route('leave_requests.index')->with('success', 'Leave request updated to ' . $request->status.'.');    }
 }
